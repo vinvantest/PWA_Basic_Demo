@@ -1,0 +1,314 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+
+
+<!-- NON STANDARD WEB COMPONENTS -->
+<link rel="import" href="../bower_components/paper-fab-speed-dial/paper-fab-speed-dial.html">
+<link rel="import" href="../bower_components/paper-fab-speed-dial/paper-fab-speed-dial-action.html">
+<link rel="import" href="../bower_components/paper-avatar/paper-avatar.html">
+
+<link rel="import" href="my-icons.html">
+
+<link rel="lazy-import" href="landing-page.html">
+<link rel="lazy-import" href="dashboard-page.html">
+<link rel="lazy-import" href="anynew-page.html">
+<link rel="lazy-import" href="not-found-404.html">
+
+<dom-module id="my-app">
+  <template>
+    <style>
+      :host {
+        --app-primary-color: #4285f4;
+        --app-secondary-color: black;
+        display: block;
+      }
+
+      app-drawer-layout:not([narrow]) [drawer-toggle] {
+        display: none;
+      }
+
+      app-header {
+        color: #fff;
+        background-color: var(--app-primary-color);
+      }
+
+      app-header paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+
+      .drawer-list {
+        margin: 0 20px;
+      }
+
+      .drawer-list a {
+        display: block;
+        padding: 0 16px;
+        text-decoration: none;
+        color: var(--app-secondary-color);
+        line-height: 40px;
+      }
+
+      .drawer-list a.iron-selected {
+        color: black;
+        font-weight: bold;
+      }
+    </style>
+
+    <firebase-app
+        auth-domain="[[configFirebase.authDomain]]"
+        database-url="[[configFirebase.databaseURL]]"
+        api-key="[[configFirebase.apiKey]]"
+        storage-bucket="[[configFirebase.storageBucket]]"
+        messaging-sender-id="[[configFirebase.messagingSenderId]]">
+    </firebase-app>
+    <firebase-auth
+        id="auth"
+        user="{{user}}"
+        provider="google"
+        status-known="{{statusKnown}}"
+        on-error="_handleError">
+    </firebase-auth>
+
+    <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="[[rootPath]]:page"
+        data="{{routeData}}"
+        tail="{{subroute}}">
+    </app-route>
+
+
+    <app-drawer-layout fullbleed narrow="{{narrow}}">
+      <!-- Drawer content -->
+      <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
+        <app-toolbar><h4>Menu</h4></app-toolbar>
+        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <div name="landing-page">
+              <a href="[[rootPath]]landing-page"><h4>Landing Page</h4></a>
+          </div>
+          <div name="dashboard-page">
+              <a href="[[rootPath]]dashboard-page"><h4>Dashboard Page</h4></a>
+          </div>
+          <div name="not-found-404">
+              <a href="[[rootPath]]anynew-page"><h4>Any New Page</h4></a>
+          </div>
+          <div name="not-found-404">
+              <a href="[[rootPath]]not-found-404"><h4>Not Found 404</h4></a>
+          </div>
+        </iron-selector>
+      </app-drawer>
+
+      <!-- Main content -->
+      <app-header-layout has-scrolling-region>
+        <app-header slot="header" condenses reveals effects="waterfall">
+          <app-toolbar>
+            <paper-icon-button icon="my-icons:menu" drawer-toggle halign="left"></paper-icon-button>
+            <div main-title>Vin App</div>
+            <template is="dom-if" if="[[!user]]">
+              <div>
+                <paper-avatar mini on-tap="_login"></paper-avatar> <!--
+                <paper-toast id="toastSignIn" text="Hi, [[user.displayName]! You are logged in.]"></paper-toast> -->
+              </div>
+              </template>
+              <template is="dom-if" if="[[user]]">
+                    <div>
+                    <paper-avatar mini on-tap="_logout"
+                            image-src="[[user.photoURL]]"
+                            image-sizing="cover" id="customAvatar" icon="social:person">
+                    </paper-avatar> <!--
+                    <paper-toast id="toastSignOut" text="You are logged out!"></paper-toast> -->
+                    </div>
+              </template>
+          </app-toolbar>
+        </app-header>
+
+        <iron-pages
+            selected="[[page]]"
+            attr-for-selected="name"
+            fallback-selection="not-found-404"
+            role="main">
+          <landing-page name="landing-page"></landing-page>
+          <dashboard-page name="dashboard-page"></dashboard-page>
+          <anynew-page name="anynew-page"></anynew-page>
+          <not-found name="not-found-404"></not-found>
+        </iron-pages>
+
+      </app-header-layout>
+
+      <custom-style>
+        <style is="custom-style">
+          body {
+            min-height: 300px;
+          }
+        </style>
+        <custom-style>
+            <paper-fab-speed-dial>
+              <a href="[[rootPath]]landing-page">
+                <paper-fab-speed-dial-action icon="my-icons:room-service">Landing</paper-fab-speed-dial-action></a>
+              <a href="[[rootPath]]dashboard-page">
+                <paper-fab-speed-dial-action icon="my-icons:school">Dashboard</paper-fab-speed-dial-action></a>
+              <a href="[[rootPath]]anypage-page">
+                <paper-fab-speed-dial-action icon="my-icons:fitness-center">New Page</paper-fab-speed-dial-action></a>
+              <a href="[[rootPath]]not-found-404">
+                <paper-fab-speed-dial-action icon="my-icons:kitchen">Not Found 404</paper-fab-speed-dial-action></a>
+            </paper-fab-speed-dial>
+          </custom-style>
+      </custom-style>
+
+    </app-drawer-layout>
+  </template>
+
+  <script>
+
+  //https://github.com/zolastro/HackersWeekMalaga/blob/master/src/my-app/my-app.html
+
+  /*
+    //firebase-auth Google provider --> "user" object
+    {
+    	"uid":"GOOicZrZADQMOhUjqGtzh3UiGIj2",
+    	"displayName":"Vinayak Vanarse",
+    	"photoURL":"https://lh5.googleusercontent.com/-GVY334SIV28/AAAAAAAAAAI/AAAAAAAAAF8/76a2XsxEgGk/photo.jpg",
+    	"email":"vinayak.vanarse@gmail.com",
+    	"emailVerified":true,
+    	"phoneNumber":null,
+    	"isAnonymous":false,
+    	"providerData":[
+        			{"uid":"112773197373249639440",
+        			 "displayName":"Vinayak Vanarse",
+        			 "photoURL":"https://lh5.googleusercontent.com/-GVY334SIV28/AAAAAAAAAAI/AAAAAAAAAF8/76a2XsxEgGk/photo.jpg",
+        			 "email":"vinayak.vanarse@gmail.com",
+        			 "phoneNumber":null,
+               "providerId":"google.com"
+        			 }
+        			],
+    	"apiKey":"AIzaSyBnA4Fen4iiDLABQoPUX3ePSDgeoCKjQq0",
+    	"appName":"[DEFAULT]",
+    	"authDomain":"vin-poly-fire.firebaseapp.com",
+    	"stsTokenManager":{
+          		"apiKey":"AIzaSyBnA4Fen4iiDLABQoPUX3ePSDgeoCKjQq0",
+          		"refreshToken":"APRrRCIwECYvcyq-3y8xnOt6wN7vYbM8OtR8s",
+          		"accessToken":"eyJhbGciOiJSUzI1NiIOTczNzMyNUzA",
+          		"expirationTime":1505285846321
+          		},
+    	 "redirectEventId":null
+    }
+  */
+      var configFirebase = {
+      app_name: "vin-poly-fire",
+      authDomain: "vin-poly-fire.firebaseapp.com",
+      databaseURL: "https://vin-poly-fire.firebaseio.com/",
+      apiKey: "AIzaSyBnA4Fen4iiDLABQoPUX3ePSDgeoCKjQq0",
+      storageBucket: "vin-poly-fire.appspot.com",
+      messagingSenderId: "732610726571",
+    };
+
+    class MyApp extends Polymer.Element {
+      static get is() { return 'my-app'; }
+
+      static get properties() {
+        return {
+          page: {
+            type: String,
+            reflectToAttribute: true,
+            observer: '_pageChanged',
+          },
+          configFirebase: {
+            type: Object,
+            readOnly: true,
+            value: function(){
+              return configFirebase;
+            }
+          },
+          routeData: Object,
+          subroute: String,
+          // This shouldn't be neccessary, but the Analyzer isn't picking up
+          // Polymer.Element#rootPath
+          rootPath: String,
+        };
+      }
+
+      static get observers() {
+        return [
+          '_routePageChanged(routeData.page)',
+        ];
+      }
+
+      _routePageChanged(page) {
+        // If no page was found in the route data, page will be an empty string.
+        // Deault to 'view1' in that case.
+        this.page = page || 'landing-page';
+
+        // Close a non-persistent drawer when the page & route are changed.
+        if (!this.$.drawer.persistent) {
+          this.$.drawer.close();
+        }
+      }
+
+      _pageChanged(page) {
+        // Load page import on demand. Show 404 page if fails
+        var resolvedPageUrl = this.resolveUrl(page + '.html');
+        Polymer.importHref(
+            resolvedPageUrl,
+            null,
+            this._showPage404.bind(this),
+            true);
+      }
+
+      _showPage404() {
+        this.page = 'not-found-404';
+      }
+
+      _login(){
+          return this.$.auth.signInWithPopup().then(function (result){
+            //this.$.toastSignIn.open();
+            //Polymer.dom(this.$.toastSignIn).open();
+            document.getElementById('toast').show('You are signed in!');
+          });
+      }
+
+      _logout(){
+          return this.$.auth.signOut().then(function (result){
+            //this.$.toastSignOut.open();
+            //Polymer.dom(this.$.toastSignOut).open();
+            document.getElementById('toast').show('Signed Out!');
+          });
+      }
+
+      _handleError(error){
+          console.log('Error login to Account: '+JSON.stringify(error));
+      }
+
+    }
+
+    window.customElements.define(MyApp.is, MyApp);
+  </script>
+</dom-module>
