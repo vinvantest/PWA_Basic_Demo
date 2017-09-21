@@ -1,0 +1,105 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../src/lazy-import.html">
+
+<dom-module id="dialog-html">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 5px;
+      }
+
+      a:visited { text-decoration:none; }
+      a:active { text-decoration:none; }
+      a:link { text-decoration:none; }
+
+      #notes {
+        @apply --layout-vertical;
+        @apply --layout-wrap;
+      }
+
+      #notes > paper-card {
+        --paper-card-background-color: #f3f3f3;
+        box-sizing: border-box;
+        margin: 1px 1px 1px 1px;
+      }
+
+      #notes > paper-card.magenta {
+        --paper-card-background-color: #e02871;
+        box-sizing: border-box;
+        margin:  1px 1px 1px 1px;
+      }
+
+      #notes > paper-card.darkgrey {
+        --paper-card-background-color: #c3c4cc;
+        box-sizing: border-box;
+        margin:  1px 1px 1px 1px;
+      }
+
+      #notes > paper-card.lightgrey {
+        --paper-card-background-color: #d9dae2;
+        box-sizing: border-box;
+        margin:  1px 1px 0px 1px;
+      }
+
+    </style>
+        <paper-icon-button icon="my-icons:more-vert" slot="top" on-tap="hire"></paper-icon-button>
+        <paper-dialog id="dialogx" >
+          <h2>Dialog Title</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+            sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <div class="buttons">
+            <paper-button>More</paper-button>
+            <paper-button dialog-dismiss>Decline</paper-button>
+            <paper-button dialog-confirm autofocus on-tap="hire">Accept</paper-button>
+          </div>
+        </paper-dialog>
+
+
+        <paper-dialog id="dialog" backdrop transition="core-transition-bottom" >
+
+          <div id="notes">
+
+            <paper-card class="lightgrey"><span><p>Call Jennifer</p></span>
+              <div >
+                <paper-icon-button icon="my-icons:video-call"></paper-icon-button>
+                <span>Loren Ipsum shljli2kksj  jsdkk jlsl</span>
+              </div>
+            </paper-card>
+            <paper-card class="darkgrey">
+              <div>
+                  <div><p>Groceries:</p></div>
+                  <div><paper-checkbox>almond milk</paper-checkbox></div>
+                  <div><paper-checkbox>coconut water</paper-checkbox></div>
+                  <div><paper-checkbox>cheese</paper-checkbox></div>
+                  <div><paper-checkbox>green apples</paper-checkbox></div>
+                  <div>
+                        <paper-icon-button icon="my-icons:location-city"></paper-icon-button>
+                        <span>Campbell</span>
+                  </div>
+              </div>
+            </paper-card>
+            <paper-card class="magenta">
+                        <paper-icon-button icon="my-icons:settings" on-tap="gosettings" halign="center"></paper-icon-button>
+            </paper-card>
+
+          </div>
+
+        </paper-dialog>
+  </template>
+  <script>
+      class DailogHTML extends Polymer.Element {
+            static get is() { return 'dialog-html'; }
+            hire(e) {
+              this.$.dialog.toggle();
+            }
+            gosettings(e) {
+              //toggle off the dialog box
+              this.$.dialog.toggle();
+              //send the response to settings page
+            }
+          }
+      window.customElements.define(DailogHTML.is, DailogHTML);
+  </script>
+</dom-module>

@@ -10,6 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../src/lazy-import.html">
+<link rel="import" href="dialog-html.html">
 
 <link rel="lazy-import" href="landing-page.html">
 <link rel="lazy-import" href="dashboard-page.html">
@@ -91,6 +92,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         status-known="{{statusKnown}}"
         on-error="_handleError">
     </firebase-auth>
+    <iron-ajax
+            id="postUserOnLogin"
+            auto
+            method="post"
+            url="//httpbin.org/post"
+            body='[{"user":"{{user}}"}]'
+            handle-as="json"
+            content-type="application/json"
+            on-response="handleResponsePostSigninAJAX">
+    </iron-ajax>
 
     <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
     <app-route
@@ -108,62 +119,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <app-toolbar condenses>
           <template is="dom-if" if="[[!user]]">
-            <div>
-              <paper-avatar mini on-tap="_login"></paper-avatar> <!--
-              <paper-toast id="toastSignIn" text="Hi, [[user.displayName]! You are logged in.]"></paper-toast> -->
-            </div>
-            <span id="tab"> <h6>Menu</h6></span>
+                <div>
+                  <paper-avatar mini on-tap="_login"></paper-avatar> <!--
+                  <paper-toast id="toastSignIn" text="Hi, [[user.displayName]! You are logged in.]"></paper-toast> -->
+                </div>
+                <span id="tab"> <h6>Menu</h6></span>
             </template>
             <template is="dom-if" if="[[user]]">
                   <div>
-                  <paper-avatar mini on-tap="_logout"
-                          image-src="[[user.photoURL]]"
-                          image-sizing="cover" id="customAvatar" icon="social:person">
-                  </paper-avatar>
-                   <!-- <paper-toast id="toastSignOut" text="You are logged out!"></paper-toast> -->
-                   <span id="tab"> <h6>Hi, [[user.displayName]]!</h6></span>
-                  </div>
+                      <paper-avatar mini on-tap="_logout"
+                              image-src="[[user.photoURL]]"
+                              image-sizing="cover" id="customAvatar" icon="social:person">
+                      </paper-avatar></div>
+                       <span id="tab"> <h6>Hi,[[user.displayName]]!</h6></span>
             </template>
         </app-toolbar>
-        <!--
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <div name="landing-page">
-              <a href="[[rootPath]]landing-page"><h4>Landing Page</h4></a>
-          </div>
-          <div name="dashboard-page">
-              <a href="[[rootPath]]dashboard-page"><h4>Dashboard Page</h4></a>
-          </div>
-          <div name="not-found-404">
-              <a href="[[rootPath]]anynew-page"><h4>Any New Page</h4></a>
-          </div>
-          <div name="not-found-404">
-              <a href="[[rootPath]]not-found-404"><h4>Not Found 404</h4></a>
-          </div>
-        </iron-selector>
-      -->
-        <a name="notification" href="[[rootPath]]dashboard-page">
+
+        <a name="dashboard" href="[[rootPath]]dashboard-page">
           <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Home</h5></paper-button>
         </a>
-        <a name="notification" href="[[rootPath]]anynew-page">
+        <a name="transactions" href="[[rootPath]]transactions-page">
           <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Transasctions</h5></paper-button>
         </a>
-        <a name="notification" href="[[rootPath]]not-found-404">
+        <a name="invoices" href="[[rootPath]]invoices-page">
           <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Invoices</h5></paper-button>
         </a>
-        <a name="users" href="[[rootPath]]users">
+        <a name="payments" href="[[rootPath]]payments-page">
           <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Payments</h5></paper-button>
         </a>
-        <a name="notification" href="[[rootPath]]notification">
+        <a name="reports" href="[[rootPath]]reports-page">
           <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Reports</h5></paper-button>
         </a>
-        <a name="notification" href="[[rootPath]]notification">
-          <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Chart of Accounts</h5></paper-button>
+        <a name="chartofaccounts" href="[[rootPath]]chartofaccounts-page">
+          <paper-button><iron-icon icon="my-icons:blur-on"chartofaccounts></iron-icon><h5>Chart of Accounts</h5></paper-button>
         </a>
-        <a name="notification" href="[[rootPath]]notification">
+        <a name="customers" href="[[rootPath]]customers-page">
           <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Customers</h5></paper-button>
-        </a>
-        <a name="greeting" href="[[rootPath]]greeting">
-          <paper-button><iron-icon mini icon="my-icons:settings"></iron-icon><h5>Settings</h5></paper-button>
         </a>
       </app-drawer>
 
@@ -177,8 +168,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div main-title></div>
               <template is="dom-if" if="[[!user]]">
                 <div><paper-avatar mini on-tap="_login"></paper-avatar></div>
-                <div><paper-icon-button slot="top" on-tap="opendialog" icon="my-icons:more-vert"></paper-icon-button>
-                  <!-- <paper-toast id="toastSignIn" text="Hi, [[user.displayName]! You are logged in.]"></paper-toast> -->
+                <div>  <dialog-html></dialog-html>
+                  <!--
+                  <paper-icon-button slot="top" on-tap="opendialog" icon="my-icons:more-vert"></paper-icon-button>
+                  <paper-toast id="toastSignIn" text="Hi, [[user.displayName]! You are logged in.]"></paper-toast> -->
                 </div>
               </template>
               <template is="dom-if" if="[[user]]">
@@ -189,9 +182,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </paper-avatar> <!--
                     <paper-toast id="toastSignOut" text="You are logged out!"></paper-toast> -->
                     </div>
-                    <div>
+                    <div> <dialog-html></dialog-html>
+                      <!--
                         <paper-icon-button icon="my-icons:more-vert" slot="top" on-tap="opendialog"></paper-icon-button>
-                      <!-- <paper-toast id="toastSignIn" text="Hi, [[user.displayName]! You are logged in.]"></paper-toast> -->
+                        <paper-toast id="toastSignIn" text="Hi, [[user.displayName]! You are logged in.]"></paper-toast> -->
                     </div>
               </template>
           </app-toolbar>
@@ -205,7 +199,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             role="main">
           <landing-page name="landing-page"></landing-page>
           <dashboard-page name="dashboard-page"></dashboard-page>
-          <anynew-page name="anynew-page"></anynew-page>
+          <transactions-page name="anynew-page"></transactions-page>
           <not-found name="not-found-404"></not-found>
         </iron-pages>
 
@@ -235,32 +229,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- BOTTOM TOOLBAR -->
         <paper-toolbar>
           <div style="float:left; width:100%">
+
             <div id="leftThing" style="float:left; width:25%;">
-            <paper-icon-button slot="top" icon="my-icons:blur-on"></paper-icon-button></div>
+              <div>
+                <a href="[[rootPath]]dashboard-page">
+                  <paper-icon-button id="dashboard-icon-button" slot="top" icon="my-icons:dashboard"></paper-icon-button>
+                </a>
+              </div>
+            </div>
+
             <div id="leftThing" style="float:left; width:25%;">
-            <a name="users" href="[[rootPath]]landing-page">
-              <paper-icon-button slot="top" icon="my-icons:subject"></paper-icon-button></div>
-            </a>
+              <a href="[[rootPath]]transactions-page">
+                <paper-icon-button id="transactions-icon-button" slot="top" icon="my-icons:gavel"></paper-icon-button>
+              </a>
+            </div>
+
             <div id="leftThing" style="float:left; width:25%;">
-            <a name="users" href="[[rootPath]]dashboard-page">
-              <paper-icon-button slot="top" icon="my-icons:business-center"></paper-icon-button></div>
-            </a>
+              <a href="[[rootPath]]payments-page">
+                <paper-icon-button id="payments-icon-button" slot="top" icon="my-icons:select-all"></paper-icon-button>
+              </a>
+            </div>
+
             <div id="leftThing" style="float:right; width:25%;">
-            <a name="users" href="[[rootPath]]anynew-page">
-              <paper-icon-button slot="top" icon="my-icons:wb-cloudy"></paper-icon-button></div>
-            </a>
+              <a href="[[rootPath]]reports-page">
+                <paper-icon-button id="reports-icon-button" slot="top" icon="my-icons:line-style"></paper-icon-button>
+              </a>
+            </div>
+
         </div>
         </paper-toolbar>
 
     </app-drawer-layout>
 
-    <paper-dialog id="dialogvin" modal>
-      <h2>Header</h2>
-      <div class="buttons">
-        <button dialog-confirm autofocus>Accept</button>
-      </div>
-    </paper-dialog>
-
+    <paper-tooltip for="dashboard-icon-button" position="top" offset="0">Dashboard</paper-tooltip>
+    <paper-tooltip for="transactions-icon-button" position="top" offset="0">Transactions</paper-tooltip>
+    <paper-tooltip for="payments-icon-button" position="top" offset="0">Payments</paper-tooltip>
+    <paper-tooltip for="reports-icon-button" position="top" offset="0">Reports</paper-tooltip>
   </template>
 
   <script>
@@ -329,18 +333,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
           rootPath: String,
-          listeners : {
-            'open-dialog': 'handleOpenDialog',
-          },
         };
-      }
-
-      handleOpenDialog() {
-              this.$.dialogvin.open();
-      }
-
-      opendialog() {
-            this.fire('open-dialog');
       }
 
       static get observers() {
@@ -379,6 +372,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             //this.$.toastSignIn.open();
             //Polymer.dom(this.$.toastSignIn).open();
             document.getElementById('toast').show('You are signed in!');
+            
+            //Store the user in Elastic Backend
+
+            //ERROR here ... says cannot read property of undefined $.
+            let request = document.getElementById('postUserOnLogin').generateRequest();
+            request.completes.then(function(req) {
+                // succesful request, argument is iron-request element
+                console.log('iron request element is->'+req);
+                return;
+              }, function(rejected) {
+                // failed request, argument is an object
+                let req = rejected.request;
+                let error = rejected.error;
+                console.log('API Call - User Insertion - rejected');
+                console.log(error);
+              }
+            )
           });
       }
 
@@ -392,6 +402,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _handleError(error){
           console.log('Error login to Account: '+JSON.stringify(error));
+      }
+
+      handleResponsePostSigninAJAX(){
+        document.getElementById('toast').show('User data stored in backend');
+        console.log
       }
 
     }

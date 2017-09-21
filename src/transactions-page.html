@@ -12,7 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../src/lazy-import.html">
 
-<dom-module id="anynew-page">
+<dom-module id="transactions-page">
   <template>
     <style include="shared-styles">
       :host {
@@ -31,10 +31,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-    class AnyNewPage extends Polymer.Element {
-      static get is() { return 'anynew-page'; }
+    class TransactionsPage extends Polymer.Element {
+      static get is() { return 'transactions-page'; }
     }
 
-    window.customElements.define(AnyNewPage.is, AnyNewPage);
+    window.customElements.define(TransactionsPage.is, TransactionsPage);
   </script>
 </dom-module>
