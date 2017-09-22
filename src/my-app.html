@@ -127,8 +127,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       <paper-avatar mini on-tap="_logout"
                               image-src="[[user.photoURL]]"
                               image-sizing="cover" id="customAvatar" icon="social:person">
-                      </paper-avatar></div>
-                       <span id="tab"> <h6>Hi,[[user.displayName]]!</h6></span>
+                      </paper-avatar>
+                  </div>
+                  <span id="tab"> <h6>Hi,[[user.displayName]]!</h6></span>
             </template>
         </app-toolbar>
 
@@ -165,7 +166,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div main-title></div>
               <template is="dom-if" if="[[!user]]">
                 <div><paper-avatar mini on-tap="_login"></paper-avatar></div>
-                <div>  <dialog-html></dialog-html>
+                <div>
+                  <dialog-html user="{{user}}" signedin="{{signedIn}}"></dialog-html>
                 </div>
               </template>
               <template is="dom-if" if="[[user]]">
@@ -176,7 +178,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </paper-avatar>
                     </div>
                     <div>
-                        <dialog-html></dialog-html>
+                        <dialog-html user="{{user}}" signedin="{{signedIn}}"></dialog-html>
                     </div>
               </template>
           </app-toolbar>
@@ -294,7 +296,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               return configFirebase;
             }
           },
-          user: Object,
           routeData: Object,
           subroute: String,
           // This shouldn't be neccessary, but the Analyzer isn't picking up
