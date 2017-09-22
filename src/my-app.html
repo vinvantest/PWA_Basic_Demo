@@ -89,19 +89,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         id="auth"
         user="{{user}}"
         provider="google"
+        signed-in="{{signedIn}}"
         status-known="{{statusKnown}}"
         on-error="_handleError">
     </firebase-auth>
-    <iron-ajax
-            id="postUserOnLogin"
-            auto
-            method="post"
-            url="//httpbin.org/post"
-            body='[{"user":"{{user}}"}]'
-            handle-as="json"
-            content-type="application/json"
-            on-response="handleResponsePostSigninAJAX">
-    </iron-ajax>
 
     <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
     <app-route
@@ -136,7 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </app-toolbar>
 
         <a name="dashboard" href="[[rootPath]]dashboard-page">
-          <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Home</h5></paper-button>
+          <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Dashboard</h5></paper-button>
         </a>
         <a name="transactions" href="[[rootPath]]transactions-page">
           <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Transasctions</h5></paper-button>
@@ -169,9 +160,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <template is="dom-if" if="[[!user]]">
                 <div><paper-avatar mini on-tap="_login"></paper-avatar></div>
                 <div>  <dialog-html></dialog-html>
-                  <!--
-                  <paper-icon-button slot="top" on-tap="opendialog" icon="my-icons:more-vert"></paper-icon-button>
-                  <paper-toast id="toastSignIn" text="Hi, [[user.displayName]! You are logged in.]"></paper-toast> -->
                 </div>
               </template>
               <template is="dom-if" if="[[user]]">
@@ -179,13 +167,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <paper-avatar mini on-tap="_logout"
                             image-src="[[user.photoURL]]"
                             image-sizing="cover" id="customAvatar" icon="social:person">
-                    </paper-avatar> <!--
-                    <paper-toast id="toastSignOut" text="You are logged out!"></paper-toast> -->
+                    </paper-avatar>
                     </div>
-                    <div> <dialog-html></dialog-html>
-                      <!--
-                        <paper-icon-button icon="my-icons:more-vert" slot="top" on-tap="opendialog"></paper-icon-button>
-                        <paper-toast id="toastSignIn" text="Hi, [[user.displayName]! You are logged in.]"></paper-toast> -->
+                    <div>
+                        <dialog-html></dialog-html>
                     </div>
               </template>
           </app-toolbar>
@@ -197,37 +182,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="not-found-404"
             role="main">
-          <landing-page name="landing-page"></landing-page>
-          <dashboard-page name="dashboard-page"></dashboard-page>
-          <transactions-page name="anynew-page"></transactions-page>
-          <not-found name="not-found-404"></not-found>
+          <landing-page name="landing-page" user="{{user}}" signedin="{{signedIn}}"></landing-page>
+          <dashboard-page name="dashboard-page" user="{{user}}" signedin="{{signedIn}}"></dashboard-page>
+          <transactions-page name="transactions-page" user="{{user}}" signedin="{{signedIn}}"></transactions-page>
+          <payments-page name="payments-page" user="{{user}}" signedin="{{signedIn}}"></payments-page>
+          <invoices-page name="invoices-page" user="{{user}}" signedin="{{signedIn}}"></invoices-page>
+          <reports-page name="reports-page" user="{{user}}" signedin="{{signedIn}}"></reports-page>
+          <rules-page name="rules-page" user="{{user}}" signedin="{{signedIn}}"></rules-page>
+          <settings-page name="settings-page" user="{{user}}" signedin="{{signedIn}}"></settings-page>
+          <customers-page name="customers-page" user="{{user}}" signedin="{{signedIn}}"></customers-page>
+          <chartofaccounts-page name="chartofaccounts-page" user="{{user}}" signedin="{{signedIn}}"></chartofaccounts-page>
+          <not-found name="not-found-404" user="{{user}}" signedin="{{signedIn}}"></not-found>
         </iron-pages>
 
       </app-header-layout>
 
-      <!-- Floating Fab Icon  -->
-      <custom-style>
-        <style is="custom-style">
-          body {
-            min-height: 300px;
-          }
-        </style>
-        <custom-style>
-            <paper-fab-speed-dial>
-              <a href="[[rootPath]]landing-page">
-                <paper-fab-speed-dial-action icon="my-icons:room-service">Landing</paper-fab-speed-dial-action></a>
-              <a href="[[rootPath]]dashboard-page">
-                <paper-fab-speed-dial-action icon="my-icons:school">Dashboard</paper-fab-speed-dial-action></a>
-              <a href="[[rootPath]]anypage-page">
-                <paper-fab-speed-dial-action icon="my-icons:fitness-center">New Page</paper-fab-speed-dial-action></a>
-              <a href="[[rootPath]]not-found-404">
-                <paper-fab-speed-dial-action icon="my-icons:kitchen">Not Found 404</paper-fab-speed-dial-action></a>
-            </paper-fab-speed-dial>
-          </custom-style>
-      </custom-style>
 
       <!-- BOTTOM TOOLBAR -->
-        <paper-toolbar>
+        <app-toolbar>
+          <!-- Floating Fab Icon  -->
+          <custom-style>
+            <style is="custom-style">
+              body {
+                min-height: 300px;
+              }
+            </style>
+            <custom-style>
+                <paper-fab-speed-dial>
+                  <a href="[[rootPath]]landing-page">
+                    <paper-fab-speed-dial-action icon="my-icons:room-service">Landing</paper-fab-speed-dial-action></a>
+                  <a href="[[rootPath]]dashboard-page">
+                    <paper-fab-speed-dial-action icon="my-icons:school">Dashboard</paper-fab-speed-dial-action></a>
+                  <a href="[[rootPath]]anypage-page">
+                    <paper-fab-speed-dial-action icon="my-icons:fitness-center">New Page</paper-fab-speed-dial-action></a>
+                  <a href="[[rootPath]]not-found-404">
+                    <paper-fab-speed-dial-action icon="my-icons:kitchen">Not Found 404</paper-fab-speed-dial-action></a>
+                </paper-fab-speed-dial>
+              </custom-style>
+          </custom-style>
+
           <div style="float:left; width:100%">
 
             <div id="leftThing" style="float:left; width:25%;">
@@ -257,7 +250,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </div>
 
         </div>
-        </paper-toolbar>
+      </app-toolbar>
 
     </app-drawer-layout>
 
@@ -269,39 +262,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
 
-  //https://github.com/zolastro/HackersWeekMalaga/blob/master/src/my-app/my-app.html
-
-  /*
-    //firebase-auth Google provider --> "user" object
-    {
-    	"uid":"GOOicZrZADQMOhUjqGtzh3UiGIj2",
-    	"displayName":"Vinayak Vanarse",
-    	"photoURL":"https://lh5.googleusercontent.com/-GVY334SIV28/AAAAAAAAAAI/AAAAAAAAAF8/76a2XsxEgGk/photo.jpg",
-    	"email":"vinayak.vanarse@gmail.com",
-    	"emailVerified":true,
-    	"phoneNumber":null,
-    	"isAnonymous":false,
-    	"providerData":[
-        			{"uid":"112773197373249639440",
-        			 "displayName":"Vinayak Vanarse",
-        			 "photoURL":"https://lh5.googleusercontent.com/-GVY334SIV28/AAAAAAAAAAI/AAAAAAAAAF8/76a2XsxEgGk/photo.jpg",
-        			 "email":"vinayak.vanarse@gmail.com",
-        			 "phoneNumber":null,
-               "providerId":"google.com"
-        			 }
-        			],
-    	"apiKey":"AIzaSyBnA4Fen4iiDLABQoPUX3ePSDgeoCKjQq0",
-    	"appName":"[DEFAULT]",
-    	"authDomain":"vin-poly-fire.firebaseapp.com",
-    	"stsTokenManager":{
-          		"apiKey":"AIzaSyBnA4Fen4iiDLABQoPUX3ePSDgeoCKjQq0",
-          		"refreshToken":"APRrRCIwECYvcyq-3y8xnOt6wN7vYbM8OtR8s",
-          		"accessToken":"eyJhbGciOiJSUzI1NiIOTczNzMyNUzA",
-          		"expirationTime":1505285846321
-          		},
-    	 "redirectEventId":null
-    }
-  */
       var configFirebase = {
       app_name: "vin-poly-fire",
       authDomain: "vin-poly-fire.firebaseapp.com",
@@ -328,6 +288,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               return configFirebase;
             }
           },
+          user: Object,
           routeData: Object,
           subroute: String,
           // This shouldn't be neccessary, but the Analyzer isn't picking up
@@ -367,35 +328,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.page = 'not-found-404';
       }
 
-      _login(){
-          return this.$.auth.signInWithPopup().then(function (result){
-            //this.$.toastSignIn.open();
-            //Polymer.dom(this.$.toastSignIn).open();
+      _login() {
+          var provider = new firebase.auth.GoogleAuthProvider();
+          provider.addScope('https://www.googleapis.com/auth/plus.login');
+          return this.$.auth.signInWithPopup(provider).then(function (result){
             document.getElementById('toast').show('You are signed in!');
-            
-            //Store the user in Elastic Backend
-
-            //ERROR here ... says cannot read property of undefined $.
-            let request = document.getElementById('postUserOnLogin').generateRequest();
-            request.completes.then(function(req) {
-                // succesful request, argument is iron-request element
-                console.log('iron request element is->'+req);
-                return;
-              }, function(rejected) {
-                // failed request, argument is an object
-                let req = rejected.request;
-                let error = rejected.error;
-                console.log('API Call - User Insertion - rejected');
-                console.log(error);
-              }
-            )
           });
-      }
+    }//end login
 
       _logout(){
           return this.$.auth.signOut().then(function (result){
-            //this.$.toastSignOut.open();
-            //Polymer.dom(this.$.toastSignOut).open();
             document.getElementById('toast').show('Signed Out!');
           });
       }
@@ -406,11 +348,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       handleResponsePostSigninAJAX(){
         document.getElementById('toast').show('User data stored in backend');
-        console.log
       }
 
     }
 
     window.customElements.define(MyApp.is, MyApp);
+
+/*
+    <iron-ajax
+        id="ajax"
+        url="https://www.googleapis.com/youtube/v3/search"
+        params='{"part":"snippet", "q":"polymer", "key": "AIzaSyAuecFZ9xJXbGDkQYWBmYrtzOGJD-iDIgI", "type": "video"}'
+        handle-as="json"
+        last-response="{{ajaxResponse}}"
+        on-request="handleRequest"
+        on-response="handleResponse"
+        on-error="handleError">
+    </iron-ajax>
+    <iron-ajax
+        verbose
+        url="https://signasafeapi.azurewebsites.net/api/Companies/{{company.Id}}"
+        method='PUT'
+        body="{{company}}"
+        handle-as="json"
+        headers='{"Authorization": "Bearer {{sessionObject.access_token}}"}'
+        content-type="application/x-www-form-urlencoded"
+        on-response="handleSubmitCompany"
+        debounce-duration="300"
+        on-error = 'handleSubmitCompanyError'
+        id='daoSubmitCompany'>
+    </iron-ajax>
+*/
+
   </script>
 </dom-module>

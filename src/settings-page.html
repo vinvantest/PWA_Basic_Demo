@@ -12,7 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../src/lazy-import.html">
 
-<dom-module id="transactions-page">
+<dom-module id="settings-page">
   <template>
     <style include="shared-styles">
       :host {
@@ -34,7 +34,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="card">
       <div class="circle">3</div>
-      <h1>Transactions Page</h1>
+      <h1>View Three</h1>
       <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
       <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam.</p>
       <p> User id: [[user.uid]]</p>
@@ -45,8 +45,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-    class TransactionsPage extends Polymer.Element {
-      static get is() { return 'transactions-page'; }
+    class SettingsPage extends Polymer.Element {
+      static get is() { return 'settings-page'; }
 
       static get properties() {
         return {
@@ -93,6 +93,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     }
 
-    window.customElements.define(TransactionsPage.is, TransactionsPage);
+    window.customElements.define(SettingsPage.is, SettingsPage);
   </script>
 </dom-module>
