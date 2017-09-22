@@ -126,7 +126,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   <div>
                       <paper-avatar mini on-tap="_logout"
                               image-src="[[user.photoURL]]"
-                              image-sizing="cover" id="customAvatar" icon="social:person">
+                              image-sizing="cover" id="customAvatar"
+                              icon="social:person">
                       </paper-avatar>
                   </div>
                   <span id="tab"> <h6>Hi,[[user.displayName]]!</h6></span>
@@ -153,6 +154,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </a>
         <a name="customers" href="[[rootPath]]customers-page">
           <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Customers</h5></paper-button>
+        </a>
+        <a name="notes" href="[[rootPath]]notes-page">
+          <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Notes</h5></paper-button>
         </a>
       </app-drawer>
 
@@ -200,11 +204,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <settings-page name="settings-page" user="{{user}}" signedin="{{signedIn}}"></settings-page>
           <customers-page name="customers-page" user="{{user}}" signedin="{{signedIn}}"></customers-page>
           <chartofaccounts-page name="chartofaccounts-page" user="{{user}}" signedin="{{signedIn}}"></chartofaccounts-page>
+          <notes-page name="notes-page" user="{{user}}" signedin="{{signedIn}}" statusknown="{{statusKnown}}"></notes-page>
           <not-found name="not-found-404" user="{{user}}" signedin="{{signedIn}}"></not-found>
         </iron-pages>
 
       </app-header-layout>
-
 
       <!-- BOTTOM TOOLBAR -->
         <app-toolbar>
@@ -217,14 +221,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </style>
             <custom-style>
                 <paper-fab-speed-dial>
-                  <a href="[[rootPath]]landing-page">
-                    <paper-fab-speed-dial-action icon="my-icons:room-service">Landing</paper-fab-speed-dial-action></a>
-                  <a href="[[rootPath]]dashboard-page">
-                    <paper-fab-speed-dial-action icon="my-icons:school">Dashboard</paper-fab-speed-dial-action></a>
-                  <a href="[[rootPath]]anypage-page">
-                    <paper-fab-speed-dial-action icon="my-icons:fitness-center">New Page</paper-fab-speed-dial-action></a>
-                  <a href="[[rootPath]]not-found-404">
-                    <paper-fab-speed-dial-action icon="my-icons:kitchen">Not Found 404</paper-fab-speed-dial-action></a>
+                  <a href="[[rootPath]]transactions-page">
+                    <paper-fab-speed-dial-action icon="my-icons:room-service">Transactons</paper-fab-speed-dial-action></a>
+                  <a href="[[rootPath]]payments-page">
+                    <paper-fab-speed-dial-action icon="my-icons:school">Payments</paper-fab-speed-dial-action></a>
+                  <a href="[[rootPath]]settings-page">
+                    <paper-fab-speed-dial-action icon="my-icons:fitness-center">Settings</paper-fab-speed-dial-action></a>
+                  <a href="[[rootPath]]notes-page">
+                    <paper-fab-speed-dial-action icon="my-icons:kitchen">Notes</paper-fab-speed-dial-action></a>
                 </paper-fab-speed-dial>
               </custom-style>
           </custom-style>

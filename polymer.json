@@ -16,7 +16,8 @@
     "src/payments-page.html",
     "src/reports-page.html",
     "src/settings-page.html",
-    "src/rules-page.html"    
+    "src/rules-page.html",
+    "src/notes-page.html"    
   ],
   "sources": [
     "src/**/*",

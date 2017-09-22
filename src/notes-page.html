@@ -1,0 +1,105 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../src/lazy-import.html">
+
+<dom-module id="notes-page">
+
+  <template>
+  <style include="shared-styles">
+    :host {
+      display: block;
+      padding: 10px;
+    }
+  </style>
+
+    <!-- <firebase-auth id="auth" user="{{user}}"> </firebase-auth> -->
+    <firebase-query
+      id="query"
+      path="/users/[[user.uid]]/notes"
+      data="{{notes}}">
+   </firebase-query>
+
+   <h4>Notes:</h4>
+   <template is="dom-if" if="[signedin]]">
+      <paper-card style="width: 100%">
+          <div id="notes">
+            <ul id="node-list">
+              <template is="dom-repeat" items="[[notes]]" as="note">
+                <li>
+                  <p class="content">[[note.content]]
+                  <paper-icon-button icon="clear" note=[[note]] on-tap="_removeNote"></paper-icon-button></p>
+                </li>
+              </template>
+            </ul>
+          </div>
+         <paper-input id="inputTxt" name="inputTxtName" value="{{inputTxtValue}}" label="Take a note..." on-changes="_handleInputTxt"></paper-input>
+         <div id="note-controls">
+           <paper-icon-button icon="my-icons:blur-on" raised id="add" on-tap="_addNote"></paper-icon-button>
+         </div>
+   </paper-card>
+   </template>
+
+   <template is="dom-if" if="[[!signedin]]">
+     <paper-card>
+       <div>
+           <div><h4><u>You are not Signed In:</u></h4></div>
+           <p>
+               In order to view your notes, sign in to the app using your credentials:
+               <ul>
+                 <li>Tap on top right icon to sign in</li>
+                 <li>Go to settings page and sign in</li>
+               </ul>
+               <b>Note:</b> Notifications are activated per device. To receive notifications on multiple devices,
+               sign in on each device, enable notifications, and make sure you're online.
+           </p>
+           <div style="text-align: center">
+             <a href="/settings-page">
+                 <paper-button>
+                     <iron-icon icon="my-icons:blur-on"></iron-icon><h4>Settings</h4>
+                 </paper-button>
+               </a>
+             </div>
+       </div>
+     </paper-card>
+   </template>
+
+  </template>
+
+  <script>
+
+  class MyNotes extends Polymer.Element {
+        static get is() { return 'notes-page'; }
+        static get properties() {
+              return {
+                notes: {
+                  type: Object
+                },
+                user: {
+                  type: Object,
+                },
+                signedin: {
+                  type: Boolean,
+                },
+                statusknown: {
+                  type: Boolean,
+                }
+            };
+        }
+        _addNote(){
+              this.$.query.ref.push({
+                content: this.inputTxtValue
+              });
+              this.inputTxtValue = null;
+        }
+
+      _removeNote(e){
+        var key = e.currentTarget.note.$key;
+        this.$.query.ref.child(key).remove();
+      }
+
+    } //end Polymer.Element
+
+    window.customElements.define(MyNotes.is, MyNotes);
+  </script>
+
+</dom-module>
