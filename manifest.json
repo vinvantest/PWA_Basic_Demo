@@ -1,6 +1,6 @@
 {
   "name": "Vin App Polyfire",
-  "short_name": "Vin App Dev",
+  "short_name": "Vin App Dev1",
   "description": "Vin Polymerfire demo",
   "start_url": "./?homescreen=1",
   "display": "standalone",
