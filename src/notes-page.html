@@ -8,8 +8,30 @@
   <style include="shared-styles">
     :host {
       display: block;
-      padding: 10px;
+      padding: 1px;
     }
+
+    paper-card {
+      --paper-card-background-color: #ffffff;
+      box-sizing: border-box;
+      margin: 1px 1px 1px 1px;
+    }
+
+    paper-card.grey {
+      --paper-card-background-color: ##d4d7db;
+      box-sizing: border-box;
+      margin:  5px 5px 5px 5px;
+    }
+
+    paper-input {
+        --paper-input-container-color: red;
+        --paper-input-container-focus-color: black;
+        --paper-input-container-invalid-color: green;
+        --paper-input-container-input-color: black;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        font-size: 12px;
+    }
+
   </style>
 
     <!-- <firebase-auth id="auth" user="{{user}}"> </firebase-auth> -->
@@ -20,29 +42,47 @@
    </firebase-query>
 
    <h4>Notes:</h4>
-   <template is="dom-if" if="[signedin]]">
-      <paper-card style="width: 100%">
-          <div id="notes">
-            <ul id="node-list">
-              <template is="dom-repeat" items="[[notes]]" as="note">
-                <li>
-                  <p class="content">[[note.content]]
-                  <paper-icon-button icon="clear" note=[[note]] on-tap="_removeNote"></paper-icon-button></p>
-                </li>
-              </template>
-            </ul>
-          </div>
-         <paper-input id="inputTxt" name="inputTxtName" value="{{inputTxtValue}}" label="Take a note..." on-changes="_handleInputTxt"></paper-input>
-         <div id="note-controls">
-           <paper-icon-button icon="my-icons:blur-on" raised id="add" on-tap="_addNote"></paper-icon-button>
-         </div>
+
+  <paper-card style="width: 100%" class="grey">
+    <div id="notes">
+     <template is="dom-if" if="[signedin]]">
+       <div style="width: 100%">
+        <template is="dom-repeat" items="[[notes]]" as="note">
+          <paper-card style="width: 100%">
+                <div style="float:left; width:100%" class"box">
+                  <div id="leftThing" style="float:left; width:10%;">
+                     <iron-icon icon="my-icons:play-arrow"></iron-icon>
+                  </div>
+                    <div id="leftThing" style="float:left; width:80%;" flex>
+                      <div class="details" flex><p style='color: grey;'>[[note.content]]</p></div>
+                    </div>
+                  <div id="rightThing" style="float:right; width:10%;">
+                    <paper-icon-button mini style='color: grey;' icon="my-icons:delete" slot="top" note=[[note]] on-tap="_removeNote"></paper-icon-button>
+                </div>
+              </div>
+            </paper-card>
+        </template>
+      </div>
+      <div>
+          <paper-input  id="inputTxt" style="color: black;"
+                            name="inputTxtName" value="{{inputTxtValue}}"
+                            label="Take a note...max lenght 500 characters" on-changes="_handleInputTxt"
+                            char-counter maxlength="500"></paper-input>
+      </div>
+      <div id="note-controls" style="float:center;">
+         <paper-icon-button icon="icons:note-add" style="color: #e02871" id="add" on-tap="_addNote"></paper-icon-button>
+     </div>
+     </template>
+   </div>
    </paper-card>
-   </template>
+
 
    <template is="dom-if" if="[[!signedin]]">
      <paper-card>
        <div>
            <div><h4><u>You are not Signed In:</u></h4></div>
+    </paper-card>
+    <paper-card>
            <p>
                In order to view your notes, sign in to the app using your credentials:
                <ul>

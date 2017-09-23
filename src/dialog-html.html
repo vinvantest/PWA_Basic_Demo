@@ -87,26 +87,49 @@
 
 
             <paper-card class="lightgrey">
-              <div style="float:left; width:100%">
-                  <div><h4><u>Notifications:</u></h4></div>
-                  <div style="text-align: center"><paper-checkbox>I want to receive notifications.</paper-checkbox></div>
-                  <p>
-                      If this option is deselected, I understand I won't be notified when:
-                      <ul>
-                        <li>Changes occur in backend</li>
-                        <li>Transactions added to dashboard</li>
-                      </ul>
-                      <b>Note:</b> Notifications are activated per device. To receive notifications on multiple devices,
-                      sign in on each device, enable notifications, and make sure you're online.
-                  </p>
-                  <div style="text-align: center">
-                    <a href="/settings-page">
-                        <paper-button dialog-confirm autofocus >
-                            <iron-icon icon="my-icons:blur-on"></iron-icon><h4>Settings</h4>
-                        </paper-button>
-                      </a>
+              <template is="dom-if" if="[[signedin]]">
+                    <div style="float:left; width:100%">
+                        <div><h4><u>Notifications:</u></h4></div>
+                        <div style="text-align: center"><paper-checkbox>I want to receive notifications.</paper-checkbox></div>
+                        <p>
+                            If this option is deselected, I understand I won't be notified when:
+                            <ul>
+                              <li>Changes occur in backend</li>
+                              <li>Transactions added to dashboard</li>
+                            </ul>
+                            <b>Note:</b> Notifications are activated per device. To receive notifications on multiple devices,
+                            sign in on each device, enable notifications, and make sure you're online.
+                        </p>
+                        <div style="text-align: center">
+                          <a href="/settings-page">
+                              <paper-button dialog-confirm autofocus >
+                                  <iron-icon icon="my-icons:blur-on"></iron-icon><h4>Settings</h4>
+                              </paper-button>
+                            </a>
+                          </div>
                     </div>
-              </div>
+            </template>
+            <template is="dom-if" if="[[!signedin]]">
+                  <div style="float:left; width:100%">
+                      <div><h4><u>You are not Signed In:</u></h4></div>
+                      <p>
+                          In order to view your notes, sign in to the app using your credentials:
+                          <ul>
+                            <li>Tap on top right icon to sign in</li>
+                            <li>Go to settings page and sign in</li>
+                          </ul>
+                          <b>Note:</b> Notifications are activated per device. To receive notifications on multiple devices,
+                          sign in on each device, enable notifications, and make sure you're online.
+                      </p>
+                      <div style="text-align: center">
+                        <a href="/settings-page">
+                            <paper-button dialog-confirm autofocus >
+                                <iron-icon icon="my-icons:blur-on"></iron-icon><h4>Settings</h4>
+                            </paper-button>
+                          </a>
+                        </div>
+                  </div>
+            </template>
             </paper-card>
 
             <paper-card class="magenta">

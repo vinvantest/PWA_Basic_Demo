@@ -11,6 +11,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../src/lazy-import.html">
 <link rel="import" href="dialog-html.html">
+
 <link rel="lazy-import" href="landing-page.html">
 <link rel="lazy-import" href="dashboard-page.html">
 <link rel="lazy-import" href="transactions-page.html">
@@ -169,7 +170,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-icon-button icon="my-icons:menu" drawer-toggle halign="left"></paper-icon-button>
             <div main-title></div>
               <template is="dom-if" if="[[!user]]">
-                <div><paper-avatar mini on-tap="_login"></paper-avatar></div>
+                <div>
+                  <paper-avatar mini on-tap="_login"></paper-avatar></div>
                 <div>
                   <dialog-html user="{{user}}" signedin="{{signedIn}}"></dialog-html>
                 </div>
@@ -305,6 +307,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
           rootPath: String,
+          user: {
+            type: Object,
+          },
+          statusKnown: {
+            type: Object
+          },
+          signedIn:{
+            type: Boolean,
+            value: false,
+            //observer: "_signedInChanged"
+          },
+
         };
       }
 
@@ -345,7 +359,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return this.$.auth.signInWithPopup(provider).then(function (result){
             document.getElementById('toast').show('You are signed in!');
           });
-    }//end login
+        }//end login
 
       _logout(){
           return this.$.auth.signOut().then(function (result){
