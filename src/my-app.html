@@ -10,7 +10,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../src/lazy-import.html">
-<link rel="import" href="dialog-html.html">
 
 <link rel="lazy-import" href="landing-page.html">
 <link rel="lazy-import" href="dashboard-page.html">
@@ -169,6 +168,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle halign="left"></paper-icon-button>
             <div main-title></div>
+            <div>
+              <login-page user="{{user}}" signedin="{{signedIn}}"></login-page>
+            </div>
+
+            <!-- Working but resplaced with modal dialog box for login
               <template is="dom-if" if="[[!user]]">
                 <div>
                   <paper-avatar mini on-tap="_login"></paper-avatar></div>
@@ -187,6 +191,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <dialog-html user="{{user}}" signedin="{{signedIn}}"></dialog-html>
                     </div>
               </template>
+            -->
+
           </app-toolbar>
         </app-header>
 

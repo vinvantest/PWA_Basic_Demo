@@ -17,7 +17,8 @@
     "src/reports-page.html",
     "src/settings-page.html",
     "src/rules-page.html",
-    "src/notes-page.html"    
+    "src/notes-page.html",
+    "src/login-page.html"
   ],
   "sources": [
     "src/**/*",
