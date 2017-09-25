@@ -33,7 +33,8 @@
     "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",
     "paper-tooltip": "PolymerElements/paper-tooltip#^2.0.1",
     "neon-animation": "PolymerElements/neon-animation#^2.0.1",
-    "paper-toolbar": "PolymerElements/paper-toolbar#^2.0.0"
+    "paper-toolbar": "PolymerElements/paper-toolbar#^2.0.0",
+    "iron-autogrow-textarea": "PolymerElements/iron-autogrow-textarea#^2.1.0"
   },
   "resolutions": {
     "polymer": "^2.0.0"

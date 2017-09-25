@@ -7,29 +7,53 @@
   <template>
   <style include="shared-styles">
     :host {
-      display: block;
-      padding: 1px;
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        margin: 0 auto;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    :host(.horizontal) {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-around-justified);
+        max-width: inherit;
     }
 
     paper-card {
       --paper-card-background-color: #ffffff;
       box-sizing: border-box;
-      margin: 1px 1px 1px 1px;
+      margin: 5px 5px 5px 5px;
+    }
+
+    paper-card.magenta {
+      --paper-card-background-color: #e02871;
+      box-sizing: border-box;
+      margin:  10px 10px 10px 10px;
     }
 
     paper-card.grey {
-      --paper-card-background-color: ##d4d7db;
+      --paper-card-background-color: #d4d7db;
       box-sizing: border-box;
-      margin:  5px 5px 5px 5px;
+      margin:  10px 10px 10px 10px;
     }
 
     paper-input {
-        --paper-input-container-color: red;
+        --paper-input-container-color: black;
         --paper-input-container-focus-color: black;
         --paper-input-container-invalid-color: green;
         --paper-input-container-input-color: black;
+        --paper-input-container-label: {
+                font-size: 14px;
+              };
         font-family: 'Roboto', 'Noto', sans-serif;
         font-size: 12px;
+    }
+
+    iron-autogrow-textarea {
+          width: 300px;
+          margin: 5px 5px 5px 5px;
     }
 
   </style>
@@ -41,67 +65,85 @@
       data="{{notes}}">
    </firebase-query>
 
-   <h4>Notes:</h4>
-
-  <paper-card style="width: 100%" class="grey">
-    <div id="notes">
-     <template is="dom-if" if="[signedin]]">
-       <div style="width: 100%">
-        <template is="dom-repeat" items="[[notes]]" as="note">
-          <paper-card style="width: 100%">
-                <div style="float:left; width:100%" class"box">
-                  <div id="leftThing" style="float:left; width:10%;">
-                     <iron-icon icon="my-icons:play-arrow"></iron-icon>
-                  </div>
-                    <div id="leftThing" style="float:left; width:80%;" flex>
-                      <div class="details" flex><p style='color: grey;'>[[note.content]]</p></div>
-                    </div>
-                  <div id="rightThing" style="float:right; width:10%;">
-                    <paper-icon-button mini style='color: grey;' icon="my-icons:delete" slot="top" note=[[note]] on-tap="_removeNote"></paper-icon-button>
-                </div>
-              </div>
-            </paper-card>
-        </template>
-      </div>
-      <div>
-          <paper-input  id="inputTxt" style="color: black;"
-                            name="inputTxtName" value="{{inputTxtValue}}"
-                            label="Take a note...max lenght 500 characters" on-changes="_handleInputTxt"
-                            char-counter maxlength="500"></paper-input>
-      </div>
-      <div id="note-controls" style="float:center;">
-         <paper-icon-button icon="icons:note-add" style="color: #e02871" id="add" on-tap="_addNote"></paper-icon-button>
-     </div>
-     </template>
-   </div>
-   </paper-card>
-
-
-   <template is="dom-if" if="[[!signedin]]">
-     <paper-card>
-       <div>
-           <div><h4><u>You are not Signed In:</u></h4></div>
+    <paper-card style="float:center; width: 60%" class="magenta">
+       <h4 style="color: white;">Notes</h4>
     </paper-card>
-    <paper-card>
-           <p>
-               In order to view your notes, sign in to the app using your credentials:
-               <ul>
-                 <li>Tap on top right icon to sign in</li>
-                 <li>Go to settings page and sign in</li>
-               </ul>
-               <b>Note:</b> Notifications are activated per device. To receive notifications on multiple devices,
-               sign in on each device, enable notifications, and make sure you're online.
-           </p>
-           <div style="text-align: center">
-             <a href="/settings-page">
-                 <paper-button>
-                     <iron-icon icon="my-icons:blur-on"></iron-icon><h4>Settings</h4>
-                 </paper-button>
-               </a>
+
+     <template is="dom-if" if="[signedin]]">
+        <template is="dom-repeat" items="[[notes]]" as="note">
+            <paper-card style="float:center; width: 90%">
+                <div>
+                  <div>
+                    <paper-icon-button icon="my-icons:blur-on" style="color: #e02871;"></paper-icon-button>
+                    <u><h7>Title:</h7></u> &nbsp; &nbsp; [[note.title]]</div>
+                    <p>
+                      <div id="leftThing" slot="top" style="float: center;">
+                        <iron-autogrow-textarea style="height: 100px;" value="[[note.content]]" id="a1"></iron-autogrow-textarea>
+                      </div>
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  <div class="horizontal justified">
+                    <paper-icon-button icon="icons:event"></paper-icon-button>
+                    <paper-button>Set Date</paper-button>
+                    <paper-button>Remove Date</paper-button>
+                    <paper-icon-button icon="my-icons:delete-forever" style="color: #e02871;" id="delete" note="[[note]]"
+                                       on-tap="_removeNote"></paper-icon-button>
+                  </div>
+                </div>
+              </paper-card>
+        </template>
+      </template>
+
+      <template is="dom-if" if="[[signedin]]">
+        <paper-card style="float:center; width: 90%" class="grey">
+            <div>
+                <paper-input  id="inputTitleTxt"
+                              value="{{inputTitleTxtValue}}"
+                              required auto-validate error-message="needs some text!"
+                              label="Note Title ..."
+                              on-changes="_handleTitleInputTxt"
+                              char-counter
+                              maxlength="25"></paper-input>
+            </div>
+            <div>
+                <iron-autogrow-textarea
+                        id="inputTxt"
+                        style="height: 100px;"
+                        value="{{inputTxtValue}}"
+                        placeholder="Take a note ..."
+                        maxlength="500"></iron-autogrow-textarea>
+            </div>
+            <div class="cafe-header">
+                 <h7>Add Note</h7>
+                 <paper-icon-button icon="icons:add-circle-outline" style="color: #e02871;" id="add" on-tap="_addNote"></paper-icon-button>
              </div>
-       </div>
-     </paper-card>
-   </template>
+        </paper-card>
+     </template>
+
+     <template is="dom-if" if="[[!signedin]]">
+       <paper-card style="float:center; width: 90%" >
+         <div>
+             <div><h4><u>You are not Signed In:</u></h4></div>
+             <p>
+                 In order to view your notes, sign in to the app using your credentials:
+                   <li>Tap on top right icon to sign in</li>
+                   <li>Go to settings page and sign in</li>
+                   <br>
+                 <b>Note:</b> Notifications are activated per device. To receive notifications on multiple devices,
+                 sign in on each device, enable notifications, and make sure you're online.
+             </p>
+             <div style="text-align: center">
+               <a href="/settings-page" style="text-decoration: black">
+                   <paper-button>
+                       <iron-icon icon="my-icons:blur-on"></iron-icon><h4 style="text-decoration: black">Settings</h4>
+                   </paper-button>
+                 </a>
+               </div>
+         </div>
+       </paper-card>
+     </template>
 
   </template>
 
@@ -112,7 +154,7 @@
         static get properties() {
               return {
                 notes: {
-                  type: Object
+                  type: Object,
                 },
                 user: {
                   type: Object,
@@ -126,10 +168,21 @@
             };
         }
         _addNote(){
+          if(this.inputTxtValue === null  || this.inputTxtValue === undefined ||
+             this.inputTitleTxtValue === null || this.inputTitleTxtValue ==='' || this.inputTitleTxtValue === undefined)
+             {
+               this.inputTxtValue = 'Please enter valid Note Tiltle and Note Description ...!';
+             }
+             else
+             {
               this.$.query.ref.push({
-                content: this.inputTxtValue
+                content: this.inputTxtValue,
+                title: this.inputTitleTxtValue
               });
               this.inputTxtValue = null;
+              this.inputTitleTxtValue = null;
+            }
+
         }
 
       _removeNote(e){

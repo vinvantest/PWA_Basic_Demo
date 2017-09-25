@@ -13,13 +13,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="reports-page">
   <template>
-    <style include="shared-styles">
-      :host {
-        display: block;
+  <style include="shared-styles">
+    :host {
+      display: block;
+      padding: 10px;
+    }
 
-        padding: 10px;
-      }
-    </style>
+    :host {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        margin: 0 auto;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    :host(.horizontal) {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-around-justified);
+        max-width: inherit;
+    }
+    paper-card.magenta {
+      --paper-card-background-color: #e02871;
+      box-sizing: border-box;
+      margin:  10px 10px 10px 10px;
+    }
+  </style>
+
+  <paper-card style="float:center; width: 60%" class="magenta">
+     <h4 style="color: white;">Reports</h4>
+  </paper-card>
 
     <div class="card">
       <div class="circle">1</div>

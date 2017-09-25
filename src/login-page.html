@@ -52,6 +52,24 @@
         width: 150px;
         }
 
+        #signindiv > paper-card.magenta {
+          --paper-card-background-color: #e02871;
+          box-sizing: border-box;
+          margin:  1px 1px 1px 1px;
+        }
+
+        #signindiv > paper-card.darkgrey {
+          --paper-card-background-color: #c3c4cc;
+          box-sizing: border-box;
+          margin:  1px 1px 1px 1px;
+        }
+
+        #signindiv > paper-card.lightgrey {
+          --paper-card-background-color: #ffffff;
+          box-sizing: border-box;
+          margin:  1px 1px 0px 1px;
+        }
+
     #googSignIn{
         background-color: white;
         }
@@ -106,12 +124,6 @@
       a:active { text-decoration:none; }
       a:link { text-decoration:none; }
 
-      paper-card.darkgrey {
-        --paper-card-background-color: #c3c4cc;
-        box-sizing: border-box;
-        margin:  1px 1px 1px 1px;
-      }
-
     </style>
     <firebase-auth
         id="auth"
@@ -139,7 +151,7 @@
 
       <paper-dialog id="dialog" backdrop transition="core-transition-bottom">
         <div id="signindiv">
-          <paper-card class="darkgrey">
+
             <H3>Sign in</H3>
             <div style="float:left; width:100%" class"box">
                 <paper-button id="googSignIn" class$="signInButton {{_getMiniClass()}}" on-tap="googleSignIn" data-auth="#google" raised>
@@ -192,7 +204,7 @@
                     Twitter
                  </paper-button>
           </div>
-          </paper-card>
+        </div>
       </paper-dialog>
 
   </template>
