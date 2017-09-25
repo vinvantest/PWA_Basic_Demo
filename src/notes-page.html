@@ -85,11 +85,16 @@
                 </div>
                 <div>
                   <div class="horizontal justified">
-                    <paper-icon-button icon="icons:event"></paper-icon-button>
-                    <paper-button>Set Date</paper-button>
-                    <paper-button>Remove Date</paper-button>
-                    <paper-icon-button icon="my-icons:delete-forever" style="color: #e02871;" id="delete" note="[[note]]"
-                                       on-tap="_removeNote"></paper-icon-button>
+                    <!-- <paper-icon-button icon="icons:event"></paper-icon-button>  -->
+                    <H7>Set Date:</h7>
+                    <vaadin-date-picker value={{note.date}}></vaadin-date-picker>
+                    <paper-icon-button icon="my-icons:update" style="color: #00000;" id="deleteDate" note="[[note]]"
+                                       on-tap="_updateDate" mini></paper-icon-button>
+                    <div>
+                        <h7>Delete Note</h7>
+                        <paper-icon-button icon="my-icons:delete-forever" style="color: #e02871;" id="deleteNote" note="[[note]]"
+                                           on-tap="_removeNote"></paper-icon-button>
+                    </div>
                   </div>
                 </div>
               </paper-card>
@@ -97,7 +102,10 @@
       </template>
 
       <template is="dom-if" if="[[signedin]]">
-        <paper-card style="float:center; width: 90%" class="grey">
+        <paper-card style="float:center; width: 90%" class="magenta" >
+          <h4 style="color: white;">Create a Note:</h4>
+        </paper-card>
+        <paper-card style="float:center; width: 90%" >
             <div>
                 <paper-input  id="inputTitleTxt"
                               value="{{inputTitleTxtValue}}"
@@ -114,6 +122,9 @@
                         value="{{inputTxtValue}}"
                         placeholder="Take a note ..."
                         maxlength="500"></iron-autogrow-textarea>
+            </div>
+            <div>
+                <vaadin-date-picker id="vaadinDateInput" placeholder="Pick a date" value={{myDate}}></vaadin-date-picker>
             </div>
             <div class="cafe-header">
                  <h7>Add Note</h7>
@@ -164,12 +175,22 @@
                 },
                 statusknown: {
                   type: Boolean,
+                },
+                myDate: {
+                    type: String,
+                    value: '',
+                    observer: '_myDateChanged'
                 }
             };
         }
+        _myDateChanged() {
+
+        }
+
         _addNote(){
           if(this.inputTxtValue === null  || this.inputTxtValue === undefined ||
-             this.inputTitleTxtValue === null || this.inputTitleTxtValue ==='' || this.inputTitleTxtValue === undefined)
+             this.inputTitleTxtValue === null || this.inputTitleTxtValue ==='' ||
+             this.inputTitleTxtValue === undefined)
              {
                this.inputTxtValue = 'Please enter valid Note Tiltle and Note Description ...!';
              }
@@ -177,7 +198,8 @@
              {
               this.$.query.ref.push({
                 content: this.inputTxtValue,
-                title: this.inputTitleTxtValue
+                title: this.inputTitleTxtValue,
+                date: this.myDate
               });
               this.inputTxtValue = null;
               this.inputTitleTxtValue = null;
@@ -188,6 +210,12 @@
       _removeNote(e){
         var key = e.currentTarget.note.$key;
         this.$.query.ref.child(key).remove();
+      }
+
+      _updateDate(e){
+        var key = e.currentTarget.note.$key;
+        this.$.query.ref.child(key).update({date: 'Date Removed!'});
+        document.getElementById('toast').show('Date removed from Note!');
       }
 
     } //end Polymer.Element

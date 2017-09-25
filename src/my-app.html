@@ -21,6 +21,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="lazy-import" href="reports-page.html">
 <link rel="lazy-import" href="rules-page.html">
 <link rel="lazy-import" href="settings-page.html">
+<link rel="lazy-import" href="banks-page.html">
+<link rel="lazy-import" href="login-page.html">
 <link rel="lazy-import" href="not-found-404.html">
 
 <dom-module id="my-app">
@@ -109,7 +111,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </app-route>
 
 
-    <app-drawer-layout fullbleed narrow="{{narrow}}">
+    <app-drawer-layout fullbleed narrow="{{narrow}}" has-scrolling-region>
 
       <!-- Drawer content -->
       <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]" has-scrolling-region>
@@ -130,34 +132,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                               icon="social:person">
                       </paper-avatar>
                   </div>
-                  <span id="tab"> <h6>Hi,[[user.displayName]]!</h6></span>
+                  <span id="tab"> <h6>Hi,&nbsp;[[user.displayName]]!</h6></span>
             </template>
         </app-toolbar>
 
-        <a name="dashboard" href="[[rootPath]]dashboard-page">
-          <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Dashboard</h5></paper-button>
-        </a>
-        <a name="transactions" href="[[rootPath]]transactions-page">
-          <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Transasctions</h5></paper-button>
-        </a>
-        <a name="invoices" href="[[rootPath]]invoices-page">
-          <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Invoices</h5></paper-button>
-        </a>
-        <a name="payments" href="[[rootPath]]payments-page">
-          <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Payments</h5></paper-button>
-        </a>
-        <a name="reports" href="[[rootPath]]reports-page">
-          <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Reports</h5></paper-button>
-        </a>
-        <a name="chartofaccounts" href="[[rootPath]]chartofaccounts-page">
-          <paper-button><iron-icon icon="my-icons:blur-on"chartofaccounts></iron-icon><h5>Chart of Accounts</h5></paper-button>
-        </a>
-        <a name="customers" href="[[rootPath]]customers-page">
-          <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Customers</h5></paper-button>
-        </a>
-        <a name="notes" href="[[rootPath]]notes-page">
-          <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Notes</h5></paper-button>
-        </a>
+        <div style="height: 100%; overflow: auto;">
+            <a name="dashboard" href="[[rootPath]]dashboard-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Dashboard</h5></paper-button>
+            </a>
+            <a name="transactions" href="[[rootPath]]transactions-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Transasctions</h5></paper-button>
+            </a>
+            <a name="invoices" href="[[rootPath]]invoices-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Invoices</h5></paper-button>
+            </a>
+            <a name="payments" href="[[rootPath]]payments-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Payments</h5></paper-button>
+            </a>
+            <a name="reports" href="[[rootPath]]reports-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Reports</h5></paper-button>
+            </a>
+            <a name="reports" href="[[rootPath]]banks-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Banks</h5></paper-button>
+            </a>
+            <a name="chartofaccounts" href="[[rootPath]]chartofaccounts-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"chartofaccounts></iron-icon><h5>Chart of Accounts</h5></paper-button>
+            </a>
+            <a name="customers" href="[[rootPath]]customers-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Customers</h5></paper-button>
+            </a>
+            <a name="notes" href="[[rootPath]]notes-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Notes</h5></paper-button>
+            </a>
+            <a name="rules" href="[[rootPath]]rules-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Rules</h5></paper-button>
+            </a>
+            <a name="settings" href="[[rootPath]]settings-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Settings</h5></paper-button>
+            </a>
+            <!-- Not sure why but last a tag required to be duplicate -->
+            <a name="settings" href="[[rootPath]]settings-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Settings</h5></paper-button>
+            </a>
+        </div>
+
       </app-drawer>
 
       <!-- Main content -->
@@ -207,13 +225,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <transactions-page name="transactions-page" user="{{user}}" signedin="{{signedIn}}"></transactions-page>
           <payments-page name="payments-page" user="{{user}}" signedin="{{signedIn}}"></payments-page>
           <invoices-page name="invoices-page" user="{{user}}" signedin="{{signedIn}}"></invoices-page>
+          <banks-page name="banks-page" user="{{user}}" signedin="{{signedIn}}"></banks-page>
           <reports-page name="reports-page" user="{{user}}" signedin="{{signedIn}}"></reports-page>
           <rules-page name="rules-page" user="{{user}}" signedin="{{signedIn}}"></rules-page>
           <settings-page name="settings-page" user="{{user}}" signedin="{{signedIn}}"></settings-page>
           <customers-page name="customers-page" user="{{user}}" signedin="{{signedIn}}"></customers-page>
           <chartofaccounts-page name="chartofaccounts-page" user="{{user}}" signedin="{{signedIn}}"></chartofaccounts-page>
           <notes-page name="notes-page" user="{{user}}" signedin="{{signedIn}}" statusknown="{{statusKnown}}"></notes-page>
-          <not-found name="not-found-404" user="{{user}}" signedin="{{signedIn}}"></not-found>
+          <not-found-404 name="not-found-404" user="{{user}}" signedin="{{signedIn}}" routepath=[[routePath]]></not-found-404>
         </iron-pages>
 
       </app-header-layout>
@@ -224,25 +243,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <custom-style>
             <style is="custom-style">
               body {
-                min-height: 300px;
+                min-height: 100px;
               }
             </style>
             <custom-style>
-                <paper-fab-speed-dial>
+                <paper-fab-speed-dial mini>
                   <a href="[[rootPath]]transactions-page">
-                    <paper-fab-speed-dial-action icon="my-icons:room-service">Transactons</paper-fab-speed-dial-action></a>
+                    <paper-fab-speed-dial-action icon="my-icons:gavel">Transactons</paper-fab-speed-dial-action></a>
                   <a href="[[rootPath]]payments-page">
-                    <paper-fab-speed-dial-action icon="my-icons:school">Payments</paper-fab-speed-dial-action></a>
+                    <paper-fab-speed-dial-action icon="my-icons:select-all">Payments</paper-fab-speed-dial-action></a>
                   <a href="[[rootPath]]settings-page">
-                    <paper-fab-speed-dial-action icon="my-icons:fitness-center">Settings</paper-fab-speed-dial-action></a>
+                    <paper-fab-speed-dial-action icon="image:nature-people">Customers</paper-fab-speed-dial-action></a>
                   <a href="[[rootPath]]notes-page">
-                    <paper-fab-speed-dial-action icon="my-icons:kitchen">Notes</paper-fab-speed-dial-action></a>
+                    <paper-fab-speed-dial-action icon="my-icons:note-add">Notes</paper-fab-speed-dial-action></a>
                 </paper-fab-speed-dial>
               </custom-style>
           </custom-style>
 
           <div style="float:left; width:100%">
-
             <div id="leftThing" style="float:left; width:25%;">
               <div>
                 <a href="[[rootPath]]dashboard-page">
@@ -250,26 +268,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </a>
               </div>
             </div>
-
             <div id="leftThing" style="float:left; width:25%;">
               <a href="[[rootPath]]transactions-page">
                 <paper-icon-button id="transactions-icon-button" slot="top" icon="my-icons:gavel"></paper-icon-button>
               </a>
             </div>
-
             <div id="leftThing" style="float:left; width:25%;">
               <a href="[[rootPath]]payments-page">
                 <paper-icon-button id="payments-icon-button" slot="top" icon="my-icons:select-all"></paper-icon-button>
               </a>
             </div>
-
             <div id="leftThing" style="float:right; width:25%;">
               <a href="[[rootPath]]reports-page">
                 <paper-icon-button id="reports-icon-button" slot="top" icon="my-icons:line-style"></paper-icon-button>
               </a>
             </div>
-
         </div>
+
       </app-toolbar>
 
     </app-drawer-layout>

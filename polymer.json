@@ -18,7 +18,8 @@
     "src/settings-page.html",
     "src/rules-page.html",
     "src/notes-page.html",
-    "src/login-page.html"
+    "src/login-page.html",
+    "src/banks-page.html"
   ],
   "sources": [
     "src/**/*",
