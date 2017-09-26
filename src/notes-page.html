@@ -73,12 +73,17 @@
         <template is="dom-repeat" items="[[notes]]" as="note">
             <paper-card style="float:center; width: 90%">
                 <div>
-                  <div>
+                  <div style="text-align: left">
                     <paper-icon-button icon="my-icons:blur-on" style="color: #e02871;"></paper-icon-button>
-                    <u><h7>Title:</h7></u> &nbsp; &nbsp; [[note.title]]</div>
+                    <u><b><h7>Note:</h7></b></u> &nbsp; &nbsp; [[note.title]]
+                  </div>
                     <p>
                       <div id="leftThing" slot="top" style="float: center;">
-                        <iron-autogrow-textarea style="height: 100px;" value="[[note.content]]" id="a1"></iron-autogrow-textarea>
+                        <iron-autogrow-textarea
+                                style="height: 100px;"
+                                value="[[note.content]]"
+                                disabled
+                                id="a1"></iron-autogrow-textarea>
                       </div>
                     </p>
                   </div>
@@ -86,12 +91,12 @@
                 <div>
                   <div class="horizontal justified">
                     <!-- <paper-icon-button icon="icons:event"></paper-icon-button>  -->
-                    <H7>Set Date:</h7>
-                    <vaadin-date-picker value={{note.date}}></vaadin-date-picker>
-                    <paper-icon-button icon="my-icons:update" style="color: #00000;" id="deleteDate" note="[[note]]"
+                    <H7>Date:</h7>
+                    <vaadin-date-picker disabled id="vaadinDate" value={{note.date}}></vaadin-date-picker>
+                    <paper-icon-button icon="my-icons:highlight-off" style="color: #afb5bf;" id="deleteDate" note="[[note]]"
                                        on-tap="_updateDate" mini></paper-icon-button>
-                    <div>
-                        <h7>Delete Note</h7>
+                    <div style="text-align: right">
+                        <h7 style="color: grey">Delete Note</h7>
                         <paper-icon-button icon="my-icons:delete-forever" style="color: #e02871;" id="deleteNote" note="[[note]]"
                                            on-tap="_removeNote"></paper-icon-button>
                     </div>
@@ -115,6 +120,7 @@
                               char-counter
                               maxlength="25"></paper-input>
             </div>
+            <div><iron-icon></iron-icon></div>
             <div>
                 <iron-autogrow-textarea
                         id="inputTxt"
@@ -192,7 +198,7 @@
              this.inputTitleTxtValue === null || this.inputTitleTxtValue ==='' ||
              this.inputTitleTxtValue === undefined)
              {
-               this.inputTxtValue = 'Please enter valid Note Tiltle and Note Description ...!';
+               this.inputTxtValue = 'Enter valid Note Title and Description...!';
              }
              else
              {
@@ -215,7 +221,7 @@
       _updateDate(e){
         var key = e.currentTarget.note.$key;
         this.$.query.ref.child(key).update({date: 'Date Removed!'});
-        document.getElementById('toast').show('Date removed from Note!');
+        document.getElementById('toast').show('Date removed from Note! Referesh to see changes...');
       }
 
     } //end Polymer.Element

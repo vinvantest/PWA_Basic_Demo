@@ -148,8 +148,8 @@
             </paper-avatar>
             </div>
       </template>
-
-      <paper-dialog id="dialog" backdrop transition="core-transition-bottom">
+      
+      <paper-dialog id="dialog" backdrop transition="core-transition-bottom" >
         <div id="signindiv">
 
             <H3>Sign in</H3>
@@ -246,7 +246,7 @@
                var token = result.credential.accessToken;
                // The signed-in user info
                var storedUser = result.user;
-               this.$.storedUser = {
+               this.storedUser = {
                        name: storedUser.displayName,
                        photo_url: storedUser.photo_url,
                        id_token: storedUser.id_token,

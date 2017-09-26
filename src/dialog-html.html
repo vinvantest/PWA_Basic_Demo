@@ -5,10 +5,20 @@
 <dom-module id="dialog-html">
   <template>
     <style include="shared-styles">
-      :host {
-        display: grid;
-        padding: 5px;
-      }
+    :host {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        margin: 0 auto;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    :host(.horizontal) {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-around-justified);
+        max-width: inherit;
+    }
 
       a:visited { text-decoration:none; }
       a:active { text-decoration:none; }
@@ -48,7 +58,6 @@
       a:link paper-button,
       a:active paper-button,
       a:visited paper-button {
-        width: 100%;
         color: #000;
         text-transform: none;
         text-decoration: none;
@@ -71,12 +80,12 @@
                 <div id="leftThing" style="float:left; width:25%;">
                   <paper-icon-button id="dashboard-icon-button" mini slot="top" icon="my-icons:grain" style="color: white;"></paper-icon-button>
                 </div>
-                  <div id="leftThing" style="float:left; width:50%;" style="text-align: center">
+                  <div id="leftThing" slot="top" style="float:left; width:50%;" style="text-align: center">
                     <template is="dom-if" if="[[signedin]]">
-                            <h7 style='color: white;'>[[user.displayName]]</h7>
+                            <h4 style='color: white;'>[[user.displayName]]</h4>
                       </template>
                     <template is="dom-if" if="[[!signedin]]">
-                          <h7 style='color: white;'>--&nbsp;&nbsp;&nbsp;&nbsp;Sign In&nbsp;&nbsp;&nbsp;&nbsp;--</h7>
+                          <h4 style='color: white;'>--&nbsp;&nbsp;&nbsp;&nbsp;Sign In&nbsp;&nbsp;&nbsp;&nbsp;--</h4>
                     </template>
                   </div>
                 <div id="rightThing" style="float:right; width:25%;">
@@ -90,37 +99,43 @@
               <template is="dom-if" if="[[signedin]]">
                     <div style="float:left; width:100%">
                         <div><h4><u>Notifications:</u></h4></div>
-                        <div style="text-align: center"><paper-checkbox>I want to receive notifications.</paper-checkbox></div>
-                        <p>
-                            If this option is deselected, I understand I won't be notified when:
-                            <ul>
-                              <li>Changes occur in backend</li>
-                              <li>Transactions added to dashboard</li>
-                            </ul>
-                            <b>Note:</b> Notifications are activated per device. To receive notifications on multiple devices,
-                            sign in on each device, enable notifications, and make sure you're online.
-                        </p>
-                        <div style="text-align: center">
-                          <a href="/settings-page">
-                              <paper-button dialog-confirm autofocus >
-                                  <iron-icon icon="my-icons:blur-on"></iron-icon><h4>Settings</h4>
-                              </paper-button>
-                            </a>
-                          </div>
-                    </div>
+                        <div ><paper-checkbox>I want to receive notifications.</paper-checkbox></div>
+                        <iron-icon></iron-icon>
+                        <div>
+                              <div style="text-align: left">
+                                  If this option is deselected, I understand I won't be notified when:
+                                  <li>Changes occur in backend</li>
+                                  <li>Transactions added to dashboard</li>
+                              </div>
+                              <iron-icon></iron-icon>
+                              <div style="text-align: left">
+                                  <b>Note:</b> Notifications are activated per device. To receive notifications on multiple devices,
+                                  sign in on each device, enable notifications, and make sure you're online.
+                              </div>
+                              <div style="text-align: center">
+                                <a href="/settings-page">
+                                    <paper-button dialog-confirm autofocus >
+                                        <iron-icon icon="my-icons:blur-on"></iron-icon><h4>Settings</h4>
+                                    </paper-button>
+                                  </a>
+                                </div>
+                        </div>
             </template>
             <template is="dom-if" if="[[!signedin]]">
                   <div style="float:left; width:100%">
                       <div><h4><u>You are not Signed In:</u></h4></div>
-                      <p>
-                          In order to view your notes, sign in to the app using your credentials:
-                          <ul>
-                            <li>Tap on top right icon to sign in</li>
-                            <li>Go to settings page and sign in</li>
-                          </ul>
-                          <b>Note:</b> Notifications are activated per device. To receive notifications on multiple devices,
-                          sign in on each device, enable notifications, and make sure you're online.
-                      </p>
+                        <div>
+                            <div style="text-align: left">
+                                In order to view your notes, sign in to the app using your credentials:
+                                  <li>Tap on top right icon to sign in</li>
+                                  <li>Go to settings page and sign in</li>
+                            </div>
+                            <iron-icon></iron-icon>
+                            <div style="text-align: left">
+                                <b>Note:</b> Notifications are activated per device. To receive notifications on multiple devices,
+                                sign in on each device, enable notifications, and make sure you're online.
+                            </div>
+                        <div>
                       <div style="text-align: center">
                         <a href="/settings-page">
                             <paper-button dialog-confirm autofocus >
