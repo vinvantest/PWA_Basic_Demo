@@ -69,8 +69,15 @@
        <h4 style="color: white;">Notes</h4>
     </paper-card>
 
+    <paper-dialog id="dialogBusy" backdrop transition="core-transition-bottom">
+        <div><h4>Retrieving Information from Server</h4></div>
+        <div>
+          <paper-pulsating-progress active="[[active]]"></paper-pulsating-progress>
+        </div>
+    </paper-dialog>
+
      <template is="dom-if" if="[signedin]]">
-        <template is="dom-repeat" items="[[notes]]" as="note">
+          <template is="dom-repeat" items="{{notes}}" as="note">
             <paper-card style="float:center; width: 90%">
                 <div>
                   <div style="text-align: left">
@@ -92,7 +99,7 @@
                   <div class="horizontal justified">
                     <!-- <paper-icon-button icon="icons:event"></paper-icon-button>  -->
                     <H7>Date:</h7>
-                    <vaadin-date-picker disabled id="vaadinDate" value={{note.date}}></vaadin-date-picker>
+                    <vaadin-date-picker id="vaadinDate" value={{note.date}}></vaadin-date-picker>
                     <paper-icon-button icon="my-icons:highlight-off" style="color: #afb5bf;" id="deleteDate" note="[[note]]"
                                        on-tap="_updateDate" mini></paper-icon-button>
                     <div style="text-align: right">
@@ -172,6 +179,7 @@
               return {
                 notes: {
                   type: Object,
+                  observer: 'dataChanged',
                 },
                 user: {
                   type: Object,
@@ -186,10 +194,15 @@
                     type: String,
                     value: '',
                     observer: '_myDateChanged'
-                }
+                },
+                active: {
+                  type: Boolean,
+                  value: false,
+                },
             };
         }
         _myDateChanged() {
+          // if date is changed
 
         }
 
@@ -212,6 +225,15 @@
             }
 
         }
+
+      dataChanged(newData, oldData) {
+        this.active = true;
+        this.$.dialogBusy.toggle();
+        // do something when the query returns values
+        console.log('new data: '+JSON.stringify(newData));
+        console.log('old data: '+JSON.stringify(newData));
+
+      }
 
       _removeNote(e){
         var key = e.currentTarget.note.$key;

@@ -35,7 +35,9 @@
     "neon-animation": "PolymerElements/neon-animation#^2.0.1",
     "paper-toolbar": "PolymerElements/paper-toolbar#^2.0.0",
     "iron-autogrow-textarea": "PolymerElements/iron-autogrow-textarea#^2.1.0",
-    "vaadin-date-picker": "vaadin/vaadin-date-picker#^2.0.4"
+    "vaadin-date-picker": "vaadin/vaadin-date-picker#^2.0.4",
+    "d3-progress-meter": "Collaborne/d3-progress-meter#^1.1.1",
+    "paper-pulsating-progress": "Collaborne/paper-pulsating-progress#^2.0.2"
   },
   "resolutions": {
     "polymer": "^2.0.0"

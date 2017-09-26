@@ -46,7 +46,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </paper-card>
 
 
-
     <iron-ajax
             id="postUserDataOnLogin"
             method="POST"
@@ -57,6 +56,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             on-response="handleResponsePostSigninAJAX"
             on-error="handleErrorPostSigninAJAX">
     </iron-ajax>
+
+    <paper-dialog id="dialogBusy" backdrop transition="core-transition-bottom">
+        <div><h4>Retrieving Information from Server</h4></div>
+        <div>
+          <paper-pulsating-progress active="[[active]]"></paper-pulsating-progress>
+        </div>
+    </paper-dialog>
+
 
     <div class="card">
       <div class="circle">3</div>
@@ -81,11 +88,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           },
           signedin: {
             type: Boolean,
-          }
+          },
+          active: {
+            type: Boolean,
+            value: false,
+          },
         };
       }
 
       sendPost(){
+        this.$.dialogBusy.toggle();
+        this.active = true;
+
         var temp = this.$.postUserDataOnLogin;
         //temp = this.$.postUserDataOnLogin;
         console.log('temp is->'+temp);
@@ -106,6 +120,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       handleResponsePostSigninAJAX(response){
+        this.active = false;
+        this.$.dialogBusy.toggle();
         const req = response.detail; // iron-request
         console.log('status', req.status, req.statusText);
         console.log('Data Returned by Ajax call-->' + JSON.stringify(response.detail.response));
