@@ -56,6 +56,30 @@
           margin: 5px 5px 5px 5px;
     }
 
+   paper-spinner, paper-spinner-lite {
+   margin: 8px 8px 8px 0;
+   }
+   paper-spinner-lite.orange {
+     --paper-spinner-color: var(--google-yellow-500);
+   }
+   paper-spinner-lite.green {
+     --paper-spinner-color: var(--google-green-500);
+   }
+   paper-spinner-lite.thin {
+     --paper-spinner-stroke-width: 1px;
+   }
+   paper-spinner-lite.thick {
+     --paper-spinner-stroke-width: 6px;
+   }
+
+   paper-spinner.multi {
+      --paper-spinner-layer-1-color: var(--paper-purple-500);
+      --paper-spinner-layer-2-color: var(--paper-cyan-500);
+      --paper-spinner-layer-3-color: var(--paper-blue-grey-500);
+      --paper-spinner-layer-4-color: var(--paper-amber-500);
+      --paper-spinner-stroke-width: 6px;
+    }
+
   </style>
 
     <!-- <firebase-auth id="auth" user="{{user}}"> </firebase-auth> -->
@@ -70,13 +94,23 @@
     </paper-card>
 
     <paper-dialog id="dialogBusy" backdrop transition="core-transition-bottom">
-        <div><h4>Retrieving Information from Server</h4></div>
+        <div><h4 style="color: grey;">Retrieving Information from Server</h4></div>
         <div>
           <paper-pulsating-progress active="[[active]]"></paper-pulsating-progress>
+          <paper-spinner active class="multi"></paper-spinner>
+          <paper-pulsating-progress active="[[active]]"></paper-pulsating-progress>
+          <!--
+          <paper-spinner-lite active class="green"></paper-spinner-lite>
+          <paper-spinner-lite active class="orange"></paper-spinner-lite>
+          <paper-spinner-lite active class="yellow"></paper-spinner-lite>
+          <paper-spinner-lite active class="blue"></paper-spinner-lite>
+        -->
         </div>
     </paper-dialog>
 
      <template is="dom-if" if="[signedin]]">
+
+<!-- show cards that are expanded with no collapsable element: the code works! Do not Delete
           <template is="dom-repeat" items="{{notes}}" as="note">
             <paper-card style="float:center; width: 90%">
                 <div>
@@ -88,8 +122,7 @@
                       <div id="leftThing" slot="top" style="float: center;">
                         <iron-autogrow-textarea
                                 style="height: 100px;"
-                                value="[[note.content]]"
-                                disabled
+                                value="{{note.content}}"
                                 id="a1"></iron-autogrow-textarea>
                       </div>
                     </p>
@@ -97,8 +130,7 @@
                 </div>
                 <div>
                   <div class="horizontal justified">
-                    <!-- <paper-icon-button icon="icons:event"></paper-icon-button>  -->
-                    <H7>Date:</h7>
+                    <H7>Set Date:</h7>
                     <vaadin-date-picker id="vaadinDate" value={{note.date}}></vaadin-date-picker>
                     <paper-icon-button icon="my-icons:highlight-off" style="color: #afb5bf;" id="deleteDate" note="[[note]]"
                                        on-tap="_updateDate" mini></paper-icon-button>
@@ -111,7 +143,80 @@
                 </div>
               </paper-card>
         </template>
-      </template>
+-->
+        <template is="dom-repeat" items="{{notes}}" as="note">
+          <paper-card style="float:center; width: 90%">
+              <div>
+                    <div style="float:center" flex>
+                          <paper-icon-button icon="my-icons:blur-on" style="color: #e02871;"></paper-icon-button>
+                          <u><b><h7>Note:</h7></b></u> &nbsp; &nbsp; [[note.title]]
+                          <paper-icon-button  icon="my-icons:arrow-drop-down" style="color: #e02871;"
+                                                  id$="bt_readmore" note="[[note]]"
+                                                  on-tap="toggleX"></paper-icon-button>
+                    </div>
+                </div>
+                <div style="float:left; width:100%">
+                  <div id="leftThing" style="float:left; width:25%;">
+                        <paper-icon-button disabled slot="top" icon="av:fast-forward" style="color: black;"></paper-icon-button>
+                    </div>
+                    <div id="leftThing" style="float:left; width:25%;">
+                      <paper-icon-button disabled slot="top" icon="hardware:power-input" style="color: black;"></paper-icon-button>
+                    </div>
+                  <div id="leftThing" style="float:left; width:25%;">
+                      <paper-icon-button disabled slot="top" icon="hardware:power-input" style="color: black;"></paper-icon-button>
+                  </div>
+                  <div id="leftThing" style="float:right; width:25%;">
+                        <paper-icon-button disabled slot="top" icon="av:fast-rewind" style="color: black;"></paper-icon-button>
+                  </div>
+              </div>
+              <div>
+                  <!-- any unique key of the data to be assigned to id of ircon collapse so that it can be toggled in javascript -->
+                  <iron-collapse id$="collapse{{note.$key}}">
+                        <div>
+                            <p>
+                              <div id="leftThing" slot="top" style="float: center;">
+                                <iron-autogrow-textarea
+                                        style="height: 100px;"
+                                        value="{{note.content}}"
+                                        id="a1"></iron-autogrow-textarea>
+                              </div>
+                            </p>
+                          </div>
+                          <div>
+                              <div class="horizontal justified">
+                                    <!-- <paper-icon-button icon="icons:event"></paper-icon-button>  -->
+                                    <H7>Set Date:</h7>
+                                    <vaadin-date-picker id="vaadinDate" value={{note.date}}></vaadin-date-picker>
+                                    <paper-icon-button icon="my-icons:highlight-off" style="color: #afb5bf;" id="deleteDate" note="[[note]]"
+                                                       on-tap="_updateDate" mini></paper-icon-button>
+                                    <div style="text-align: right">
+                                        <h7 style="color: grey">Delete Note</h7>
+                                        <paper-icon-button icon="my-icons:delete-forever" style="color: #e02871;" id="deleteNote" note="[[note]]"
+                                                           on-tap="_removeNote"></paper-icon-button>
+                                    </div>
+                              </div>
+                         </div>
+                     </iron-collapse>
+                  </div>
+            </paper-card>
+            <!-- testing
+                                <paper-card style="float:center; width: 90%">
+                                    <div>
+                                        <span>{{note.title}}</span>
+                                    </div>
+                                    <div>
+                                        <iron-collapse id$="collapse{{note.$key}}">
+                                          <div>{{note.content}}</div>
+                                        </iron-collapse>
+                                        <div>
+                                            <paper-button id$="bt_readmore" on-tap="toggleX">More</paper-button>
+                                        </div>
+                                    </div>
+                                </paper-card>
+                    </template>
+            testing -->
+          </template>
+     </template>
 
       <template is="dom-if" if="[[signedin]]">
         <paper-card style="float:center; width: 90%" class="magenta" >
@@ -230,14 +335,15 @@
         this.active = true;
         this.$.dialogBusy.toggle();
         // do something when the query returns values
-        console.log('new data: '+JSON.stringify(newData));
-        console.log('old data: '+JSON.stringify(newData));
+        //console.log('new data: '+JSON.stringify(newData));
+        //console.log('old data: '+JSON.stringify(newData));
 
       }
 
       _removeNote(e){
         var key = e.currentTarget.note.$key;
         this.$.query.ref.child(key).remove();
+        document.getElementById('toast').show('Success: Note removed from server.');
       }
 
       _updateDate(e){
@@ -245,6 +351,14 @@
         this.$.query.ref.child(key).update({date: 'Date Removed!'});
         document.getElementById('toast').show('Date removed from Note! Referesh to see changes...');
       }
+
+      toggleX(event, detail, sender) {
+            var id = event.model.note.$key;
+            var selector = '#collapse' + id;
+            //console.log('selector is ->'+selector);
+            //console.log(event.currentTarget.parentElement.parentElement);
+            event.currentTarget.parentElement.parentElement.parentElement.querySelector(selector).toggle();
+        }
 
     } //end Polymer.Element
 
