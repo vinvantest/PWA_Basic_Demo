@@ -167,10 +167,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a name="rules" href="[[rootPath]]rules-page">
               <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Rules</h5></paper-button>
             </a>
+            <a name="users" href="[[rootPath]]users-page">
+              <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Users</h5></paper-button>
+            </a>
+            <!-- Not sure why but last a tag required to be duplicate -->
             <a name="settings" href="[[rootPath]]settings-page">
               <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Settings</h5></paper-button>
             </a>
-            <!-- Not sure why but last a tag required to be duplicate -->
             <a name="settings" href="[[rootPath]]settings-page">
               <paper-button><iron-icon icon="my-icons:blur-on"></iron-icon><h5>Settings</h5></paper-button>
             </a>
@@ -210,6 +213,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <customers-page name="customers-page" user="{{user}}" signedin="{{signedIn}}"></customers-page>
           <chartofaccounts-page name="chartofaccounts-page" user="{{user}}" signedin="{{signedIn}}"></chartofaccounts-page>
           <notes-page name="notes-page" user="{{user}}" signedin="{{signedIn}}" statusknown="{{statusKnown}}"></notes-page>
+          <users-page name="users-page" user="{{user}}" signedin="{{signedIn}}" statusknown="{{statusKnown}}"></users-page>
           <not-found-404 name="not-found-404" user="{{user}}" signedin="{{signedIn}}" routepath=[[routePath]]></not-found-404>
         </iron-pages>
       </div>

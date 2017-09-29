@@ -19,7 +19,8 @@
     "src/rules-page.html",
     "src/notes-page.html",
     "src/login-page.html",
-    "src/banks-page.html"
+    "src/banks-page.html",
+    "src/users-page.html"
   ],
   "sources": [
     "src/**/*",
